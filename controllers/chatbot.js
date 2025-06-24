@@ -2,40 +2,59 @@
 const ChatMessage = require('../models/ChatMessage');
 const { v4: uuidv4 } = require('uuid');
 
-// Simple rule-based chatbot responses
+// Improved rule-based chatbot responses
 const getBotResponse = (message) => {
-  const lowerMessage = message.toLowerCase();
-  
-  if (lowerMessage.includes('hello') || lowerMessage.includes('hi')) {
-    return "Hello! Welcome to GuestGrove. How can I help you today?";
+  const lowerMessage = message.toLowerCase().trim();
+
+  // Greetings
+  if (/(hello|hi|hey|greetings|what's up)/.test(lowerMessage)) {
+    return "Hey there! 👋 Welcome to GuestGrove. How can I assist you today?";
   }
-  
-  if (lowerMessage.includes('booking') || lowerMessage.includes('reserve')) {
-    return "I can help you with bookings! You can browse available listings and make reservations through our booking system. Would you like me to guide you to the listings page?";
+
+  // Booking related
+  if (/(book|booking|reserve|reservation|stay|room)/.test(lowerMessage)) {
+    return "Looking to book a place? 🏡 You can browse listings and make reservations easily. Need help finding one?";
   }
-  
-  if (lowerMessage.includes('help') || lowerMessage.includes('support')) {
-    return "I'm here to help! I can assist you with bookings, account questions, or general information about GuestGrove. What specific help do you need?";
+
+  // Pricing / Cost
+  if (/(price|cost|rate|charges|fees|how much)/.test(lowerMessage)) {
+    return "Our prices vary by property, date, and location. 📅 You can find detailed pricing on each listing. Want help filtering by budget?";
   }
-  
-  if (lowerMessage.includes('price') || lowerMessage.includes('cost')) {
-    return "Prices vary by property and dates. You can view detailed pricing information on each listing page. Would you like me to help you find listings in your budget?";
+
+  // Location queries
+  if (/(location|where|area|nearby|place|city|region)/.test(lowerMessage)) {
+    return "We’ve got listings in multiple cities and regions! 🌍 Use the search filters to find accommodations near your preferred location.";
   }
-  
-  if (lowerMessage.includes('location') || lowerMessage.includes('where')) {
-    return "We have properties in various locations! You can use our search filters to find accommodations in your preferred area.";
+
+  // Help / Support
+  if (/(help|support|assist|issue|problem|trouble|question)/.test(lowerMessage)) {
+    return "I'm here to help! 🛟 You can ask about bookings, account issues, pricing, or anything else GuestGrove-related.";
   }
-  
-  if (lowerMessage.includes('cancel') || lowerMessage.includes('refund')) {
-    return "For cancellations and refunds, please check the cancellation policy on your booking confirmation or contact our support team for assistance.";
+
+  // Cancellations / Refunds
+  if (/(cancel|cancellation|refund|money back|change plan|change booking)/.test(lowerMessage)) {
+    return "For cancellations or refunds, please review the policy in your booking confirmation. 💸 Need help contacting support?";
   }
-  
-  if (lowerMessage.includes('account') || lowerMessage.includes('profile')) {
-    return "You can manage your account settings, view booking history, and update your profile from the user dashboard. Need help with anything specific?";
+
+  // Account related
+  if (/(account|profile|dashboard|login|signup|register|sign in)/.test(lowerMessage)) {
+    return "You can manage your profile, view bookings, and update preferences in your account dashboard. 👤 Want me to take you there?";
   }
-  
-  return "I'm sorry, I didn't quite understand that. Could you please rephrase your question? I can help with bookings, account issues, pricing, and general information about GuestGrove.";
+
+  // Availability
+  if (/(available|availability|open dates|free rooms|slots)/.test(lowerMessage)) {
+    return "You can check availability on the listing pages by selecting your preferred dates. 🗓 Need help picking a date?";
+  }
+
+  // Thank you / Appreciation
+  if (/(thank you|thanks|ty|appreciate)/.test(lowerMessage)) {
+    return "You're welcome! 😊 Let me know if there's anything else I can help with.";
+  }
+
+  // Default fallback
+  return "I'm not sure I got that. 🤔 Could you rephrase your question? I can assist with bookings, pricing, accounts, cancellations, and more!";
 };
+
 
 // API Routes for AJAX calls
 exports.sendMessage = async (req, res) => {
